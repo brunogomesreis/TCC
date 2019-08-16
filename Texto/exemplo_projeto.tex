@@ -1,0 +1,161 @@
+%%
+%% This is file `example.tex',
+%% generated with the docstrip utility.
+%%
+%% The original source files were:
+%%
+%% coppe.dtx  (with options: `example')
+%% 
+%% This is a sample monograph which illustrates the use of `coppe' document
+%% class and `coppe-unsrt' BibTeX style.
+%% 
+%% \CheckSum{1416}
+%% \CharacterTable
+%%  {Upper-case    \A\B\C\D\E\F\G\H\I\J\K\L\M\N\O\P\Q\R\S\T\U\V\W\X\Y\Z
+%%   Lower-case    \a\b\c\d\e\f\g\h\i\j\k\l\m\n\o\p\q\r\s\t\u\v\w\x\y\z
+%%   Digits        \0\1\2\3\4\5\6\7\8\9
+%%   Exclamation   \!     Double quote  \"     Hash (number) \#
+%%   Dollar        \$     Percent       \%     Ampersand     \&
+%%   Acute accent  \'     Left paren    \(     Right paren   \)
+%%   Asterisk      \*     Plus          \+     Comma         \,
+%%   Minus         \-     Point         \.     Solidus       \/
+%%   Colon         \:     Semicolon     \;     Less than     \<
+%%   Equals        \=     Greater than  \>     Question mark \?
+%%   Commercial at \@     Left bracket  \[     Backslash     \\
+%%   Right bracket \]     Circumflex    \^     Underscore    \_
+%%   Grave accent  \`     Left brace    \{     Vertical bar  \|
+%%   Right brace   \}     Tilde         \~}
+%%
+\documentclass[grad,numbers]{coppe}
+\usepackage{amsmath,amssymb}
+\usepackage{hyperref}
+\usepackage[utf8]{inputenc}
+\usepackage[brazil]{babel}
+\usepackage[T1]{fontenc}
+\usepackage{graphicx}
+\usepackage{placeins}
+\usepackage{textgreek}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{enumitem}
+
+
+\makelosymbols
+\makeloabbreviations
+
+\begin{document}
+  \title{Desenvolvimento de um equipamento de baixo custo para medição de parâmetros da frequência respiratória com aplicação em neurociência comportamental humana.}
+  \foreigntitle{low cost equipment designed to measure respiratory frequency parameters applied to human behavioral neuroscience}
+  \author{Bruno Gomes}{Reis}
+  \advisor{Prof.}{Carlos José Ribas}{D'Avila}{M.Sc.}
+  \advisor{Prof.}{Tiago Arruda}{Sanchez}{Ph.D.}
+  %\advisor{Prof.}{Nome do Terceiro Orientador}{Sobrenome}{D.Sc.}
+
+  \examiner{Prof.}{Nome do Primeiro Examinador Sobrenome}{D.Sc.}
+  \examiner{Prof.}{Nome do Segundo Examinador Sobrenome}{Ph.D.}
+  \examiner{Prof.}{Nome do Terceiro Examinador Sobrenome}{D.Sc.}
+  \examiner{Prof.}{Nome do Quarto Examinador Sobrenome}{Ph.D.}
+  \examiner{Prof.}{Nome do Quinto Examinador Sobrenome}{Ph.D.}
+  
+  
+  
+  \department{EEC}% Confira a tabela a seguir para saber como preencher o comando \department de acordo com seu curso (Graduação - Poli) ou programa (Pós-Graduação - COPPE).
+  
+  %%%%%% Para alunos da POLI %%%%%%
+  
+  %% Course											Option
+  %% Engenharia Ambiental                             EA
+  %% Engenharia Civil                                 ECV
+  %% Engenharia de Computação e Informação            ECI
+  %% Engenharia de Controle e Automação               ECA
+  %% Engenharia de Materiais                          EMAT
+  %% Engenharia de Petróleo                           EPT
+  %% Engenharia de Produção                           EPR
+  %% Engenharia Eletrônica e de Computação            EEC
+  %% Engenharia Elétrica                              EET
+  %% Engenharia Mecânica                              EMC
+  %% Engenharia Metalúrgica                           EMET
+  %% Engenharia Naval e Oceânica                      ENO
+  %% Engenharia Nuclear                               ENU
+  
+  
+  %%%%%% Para alunos da COPPE %%%%%%
+  
+  %% Program											Option
+  %% Engenharia Biomédica								PEB
+  %% Engenharia Civil									PEC
+  %% Engenharia Elétrica								PEE
+  %% Engenharia Mecânica								PEM
+  %% Engenharia Metalúrgica e de Materiais				PEMM
+  %% Engenharia Nuclear									PEN
+  %% Engenharia Oceânica								PENO
+  %% Planejamento Energético							PPE
+  %% Engenharia de Produção								PEP
+  %% Engenharia Química									PEQ
+  %% Engenharia de Sistemas e Computação				PESC
+  %% Engenharia de Transportes							PET
+  
+  
+  
+  
+  
+  
+  \date{08}{2019}
+
+  \keyword{Behavioral Neuroscience}
+  \keyword{Respiratory Frequency }
+  \keyword{Engenharia Eletrônica e de Computação}
+
+  \maketitle
+
+  \frontmatter
+  
+  \makecatalog
+  
+  \dedication{Dedico este trabalho às minhas famílias de sangue e coração.}
+
+  \chapter*{Agradecimentos}
+
+  Gostaria de agradecer a todos.
+
+  \begin{abstract}
+  	
+  O corpo humano é um sistema complexo no qual atuam diversas variáveis. Sendo assim, grande parte dos estudos científicos voltam seus métodos e análises ao estudo dos parâmetros que possuem influências para o bom ou mal funcionamento do organismo. Atualmente, sabe-se que diversas doenças psicofisiológicas produzem variações no funcionamento normal do corpo, como alterações na produção de determinados hormônios, no batimento cardíaco, na pressão arterial ou na concentração de CO2 no sangue. Nesse sentido, faz-se necessário o desenvolvimento de equipamentos, para mensurar e monitorar essas variáveis, como parte essencial à evolução do estudo científico. Munido dessa motivação, neste trabalho, apresentam-se estudos para o desenvolvimento de uma tecnologia com baixo custo capaz de monitorar o comportamento do fluxo respiratório de pacientes, servindo então como base para estudos científicos na área de neurociência comportamental. Nesse desenvolvimento, utilizamos um termistor como sensor a fim de obter informações sobre a frequência respiratória através da variação de temperatura, causada pelo contato do sensor com o fluxo de ar provocado inspiração e expiração humana.
+        
+  \end{abstract}
+
+  \begin{foreignabstract}
+
+  In this work, we present ...
+
+  \end{foreignabstract}
+
+  \tableofcontents
+  \listoffigures
+  \listoftables
+  \printlosymbols
+  \printloabbreviations
+
+  \mainmatter
+%  \doublespacing
+  
+  \include{01_Intro}
+
+  \include{02_Motivacao}  
+
+  \include{03_Desenvolvimento}
+  
+  \include{04_Materiais}
+
+  \include{05_Conclusao}
+
+  \backmatter
+  \bibliographystyle{coppe-unsrt}
+  \bibliography{example}
+
+  \appendix
+  \chapter{Algumas Demonstrações}
+\end{document}
+%% 
+%%
+%% End of file `example.tex'.

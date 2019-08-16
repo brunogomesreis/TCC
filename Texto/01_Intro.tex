@@ -1,0 +1,45 @@
+  \chapter{Introdução}
+  
+  \section{Tema}
+  
+  O tema do trabalho é o desenvolvimento de um dispositivo que realize a medição da frequência respiratória dentro de uma faixa sensível para respostas psicofisiológicas. Este dispositivo deve possibilitar o monitoramento e a extração de dados que auxiliarão em estudos os quais correlacionam alguns parâmetros da frequência respiratória com funções psicofisiológicas, como aquelas observadas sob alterações cognitivas, emocionais, sob estresse  doenças mentais.
+  
+  \section{Delimitação}
+  
+  O objeto de estudo é a medição da frequência respiratória, de baixo custo, em ambiente controlado. As medições terão como finalidade a obtenção de dados, referentes à frequência respiratória do paciente, a serem utilizados em experimentos que vinculem comportamentos saudáveis e suas variantes clínicas à respiração humana. O estudo, limita-se à obtenção dos dados referentes à frequência da respiração, não abrangendo, a priori, interpretações acerca das correlações obtidas em eventuais medições realizadas.
+  
+  \section{Justificativa}
+ 
+   A medicina como ciência tem origem no século V a.C com Hipócrates (c. 460-375 a.C)\footnote{GUSMÃO S – História da Medicina: evolução e importância, Jornal Brasileiro Neurocirurgia, 5-10-2004}. Desde então, análises e estudos sobre o funcionamento do corpo humano, bem como as interações deste com o meio ambiente, vêm sendo realizados em constante evolução. A fisiologia humana é hoje um ramo da ciência que estuda sobre os principais processos que se passam no interior do corpo humano, para a obtenção de informações acerca....
+   
+   %mesclar com motivação da medicina e com o que eu escrevi na proposta
+ 
+ 
+ 
+ 
+ 
+  
+  \section{Objetivos}
+  
+	O objetivo geral deste estudo é, então, desenvolver um equipamento capaz de realizar a aquisição de dados referentes à frequência respiratória em humanos, incluindo parâmetros que possam ser utilizados em pesquisas neurocientíficas. Desta forma, tem-se como objetivos específicos: (1) Realizar a mensuração da frequência respiratória (2) desenvolver os métodos de medida da frequência respiratória para extrair suas variantes no domínio do tempo e da frequência; e (3) Possibilitar a exportação dos dados para análises futuras.
+  
+  
+  \section{Metodologia}
+
+	A priori, a medição da frequência respiratória seria obtida indiretamente pela variação da temperatura do ar próximo à narina do paciente, uma vez que, em um ambiente controlado, o ar inalado possui uma temperatura inferior à do ar exalado. Contudo, no decorrer do desenvolvimento, foi observado que seria inviável a realização desse tipo de medição devido à baixa variação entre essas duas temperaturas e à velocidade de resposta necessária para a obtenção dos dados de forma confiável utilizando equipamentos de baixo custo. Para contornar esse problema, foi utilizada a propriedade de autoaquecimento do termistor, que passou a ser utilizado como um sensor de fluxo. Ou seja, o sistema não mais tenta inferir a frequência respiratória com base no aumento da temperatura ambiente ocasionada pela saída de ar quente do corpo humano, ao contrário, ele aplica uma corrente muito alta no sensor forçando-o a atingir por conta própria uma temperatura ainda maior em seu estado permanente e, no momento de seu encontro com qualquer fluxo de ar resultante da respiração humana, o sensor registra uma alta queda de temperatura, registrando, de forma mais nítida o momento da ação respiratória.
+
+	O termistor é um resistor variável à temperatura, escolhido principalmente por suas propriedades de autoaquecimento e pela variação exponencial de sua resistência em relação à mudança na temperatura, contrário a grande parte dos demais sensores que possuem uma relação linear entre essas variáveis. Trabalhar com um sensor de cuja curva característica é exponencial facilita detecções de pequenas variações na temperatura, gerando grandes mudanças na resistência, em contrapartida, adiciona complexidade ao sistema dado que trabalhar com relações lineares é, em geral, mais simples. A escolha do termistor é portanto perfeita porque sua contrapartida sequer implica em complicações para o sistema deste trabalho, dado que não interessa uma medição precisa da temperatura, mas sim o registro dos eventos de inspiração e expiração.
+	
+	O sistema é composto de uma fonte capaz de entregar ao sensor corrente suficiente para que este entre em estado de autoaquecimento e atinja uma temperatura alta o suficiente para se tornar sensível à variação provocada pelos fluxos de ar, um circuito regulador responsável por filtrar sinais indesejados e controlar a corrente de entrada no termistor, um microcontrolador que irá realizar as medições e um software capaz de exportar os dados para que esses possam ser tratados e estudados em suas aplicações.  
+
+  \section{Organização do Trabalho}
+  Nos próximos capítulos serão apresentados em mais detalhes as aplicações, o desenvolvimento e os resultados obtidos com esse trabalho, organizados da seguinte forma:
+  
+  O capítulo 2 apresentará a motivação para o desenvolvimento do equipamento, as aplicações no campo da medicina e um resumo do funcionamento fisiológico da respiração humana. 
+  
+  O capítulo 3 tratará sobre desenvolvimento do sistema, hardware e software bem como o raciocínio por trás da arquitetura.
+  
+  O capítulo 4 apresentará a lista de materiais utilizados no projeto
+  
+  O capítulo 5 será destinado à conclusão desse projeto, com o protótipo construído no último ciclo de desenvolvimento, limitações encontradas ao longo das etapas e também possíveis melhorias para trabalhos futuros.
+ 
