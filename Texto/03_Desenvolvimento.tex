@@ -1,7 +1,80 @@
 \chapter{Desenvolvimento}
   
 \section{O funcionamento do termistor}
- %Motivação sobre o uso do termistor (menos invasivo, baixo custo) 
+ 
+	O termistor é um resistor variável à temperatura, característica pela qual seu nome é inspirado (temperatura + resistor), geralmente compostos por uma liga que contém cerâmica e outros polímeros. Suas aplicações mais habituais costumam acontecer em circuitos de monitoramento e controle de temperatura ou como limitador de corrente de partida. São separados, basicamente, em duas categorias:
+	\begin{itemize}
+		\item NTC (Negative Temperature Coefficient): São termistores que diminuem a sua resistência à medida em que a temperatura aumenta; E
+		\item PTC (Positive Temperature Coefficient): Termistores que aumentam a sua resistência diretamente com o aumento da temperatura.
+	\end{itemize}
+	
+	\subsection{A equação de Steinhart–Hart}
+	
+		A curva de variação da resistência de um termistor em função de sua temperatura pode ser descrita pela equação de Steinhart–Hart\ref{eq:steinharthart} em sua forma inversa \ref{eq:steinharthartinverted}. A característica logarítmica da resposta com que a resistência varia em função da variação de temperatura (figura \ref{fig:curva_termistor}) é, em grande parte das vezes, uma das principais vantagens do seu uso, visto que pequenas variações na temperatura provocam grandes alterações na resistência, fazendo com que o sensor seja mais suscetível a detectar pequenas mudanças na temperatura.
+		
+		
+		\begin{equation}\label{eq:steinharthart}
+		\dfrac{1}{T} = a + b\ln{(R)} + c(\ln{(R)})^3
+		\end{equation}
+		Sendo:
+		\begin{itemize}
+			\item T: Temperatura em Kelvins;
+			\item R: Resistência em ohms ($\Omega$);E
+			\item a,b e c: Coeficientes de Steinhart–Hart, que são variáveis conforme o tipo de material e a construção do termistor.		
+		\end{itemize}
+		
+		
+		\begin{equation}\label{eq:steinharthartinverted}
+			\begin{aligned} [left]
+			& R = \exp{(\sqrt[3]{\beta - \dfrac{\alpha}{2}} - \sqrt[3]{\beta + \dfrac{\alpha}{2}})},
+			\\
+			& \alpha = \dfrac{1}{c}(a - \dfrac{1}{T}),
+			\\
+			& \beta = \sqrt{(\dfrac{b}{3c})^3 + (\dfrac{\alpha}{2})^2}
+			\end{aligned}
+		\end{equation}
+	
+	
+		\begin{figure}[h!]
+			\begin{center}
+				\includegraphics[width=1\linewidth]{images/curva_termistor.png}
+				\caption[Curva de resposta típica em termistores NTC de 10k$\Omega$]{Curva de resposta típica em termistores NTC de 10k$\Omega$\footnotemark}
+				\label{fig:curva_termistor}
+			\end{center}
+		\end{figure}
+	
+		\footnotetext{Fonte: http://www.squids.com.br/arduino/index.php/projetos-arduino/projetos-squids/basico/159-projeto-42-comparando-sensores-de-temperatura-ntc-10k-dht11-e-lm35}
+
+
+	\subsection{O efeito de Autoaquecimento}
+
+		Como toda resistência, o termistor dissipa energia elétrica na forma de calor. Portanto, ao aplicar uma corrente no sensor, é induzido um efeito de autoaquecimento. A relação da potência elétrica dissipada é dada pela equação \ref{eq:potenciaeletrica} e a relação entre potência e temperatura pode ser obtida através da equação \ref{eq:potenciatermica}. Fazendo $P_E = P_T$, é possível chegar à equação \ref{eq:temperaturacomautoaquecimento}. 
+		
+		\begin{equation}\label{eq:potenciaeletrica}
+			P_E = I.V
+		\end{equation}
+		sendo:
+		\begin{itemize}
+			\item $P_E$: Potência elétrica dissipada;
+			\item $I$: Corrente elétrica;E
+			\item $V$: Tensão entre os terminais.
+		\end{itemize}
+
+		\begin{equation}\label{eq:potenciatermica}
+			P_T = K(T_{(R)} - T_0)
+		\end{equation}
+		sendo:
+		\begin{itemize}
+			\item $P_T$: Potência;
+			\item $K$: Fator de dissipação do termistor;
+			\item $T_{(R)}$: Temperatura em função da resistência;E
+			\item $T_0$: Temperatura ao redor do termistor.
+		\end{itemize}
+		
+		\begin{equation} \label{eq:temperaturacomautoaquecimento}
+			T_0 = T_{(R)} - \dfrac{V^2}{K.R}
+		\end{equation}
+		
 
 \section{A evolução do circuito}
  
@@ -13,7 +86,7 @@ Uma das principais limitações para o desenvolvimento do projeto deve-se à dif
  
 \begin{figure}[h!]
 	\begin{center}
- 		\includegraphics[width=0.3\linewidth]{images/divisor_resistivo.png}
+ 		\includegraphics[width=0.5\linewidth]{images/divisor_resistivo.png}
  		\caption{Divisor Resistivo}
  		\label{fig:divisorResistivo}
  	\end{center}

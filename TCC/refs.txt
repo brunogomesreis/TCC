@@ -1,2 +1,0 @@
-https://www.opus-software.com.br/node-js/
-https://botpress.io/docs/10.50/getting_started/
