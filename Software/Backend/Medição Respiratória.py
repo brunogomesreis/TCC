@@ -4,7 +4,7 @@ import numpy as np
 import datetime
 import scipy.interpolate as interpolate
 from sympy import symbols
-
+import os
 
 class TimePoint:
 
@@ -13,45 +13,6 @@ class TimePoint:
         self.minutes = minutes
         self.seconds = seconds 
         self.milliseconds = milliseconds 
-
-
-
-def ShowPlot(x,function):
-    plt.plot(x,function)
-    plt.show()        
-
-def SavePlot(x,function,filename):
-    plt.plot(x,function)
-    plt.savefig(filename, dpi=None, facecolor='w', edgecolor='black',
-            orientation='portrait', papertype=None, format=None,
-            transparent=False, bbox_inches=None, pad_inches=0.1,
-            frameon=None, metadata=None)
-
-def ShowPlotDate(x,function):
-    plt.plot_date(x,function)
-    plt.show()        
-
-def SavePlotDate(x,function,filename):
-    plt.plot_date(x,function)
-    plt.savefig(filename, dpi=None, facecolor='w', edgecolor='black',
-            orientation='portrait', papertype=None, format=None,
-            transparent=False, bbox_inches=None, pad_inches=0.1,
-            frameon=None, metadata=None)
-
-
-def ConvertListOfStringDatesToNums(dates):        
-    list_of_datetimes = [datetime.datetime.strptime(date, '%H:%M:%S.%f') for date in dates]
-    list_of_datetimes = dt.date2num(list_of_datetimes)       
-    return list_of_datetimes
-
-def ConvertListOfStringDatesToTimeDelta(dates):
-    list_of_times = []
-    for time in dates:
-        (hours,minutes,seconds) =  time.split(':')
-        (seconds,milliseconds) = seconds.split('.')
-        list_of_times.append(TimePoint(hours,minutes,seconds,milliseconds))
-    return list_of_times
-
 
 def GetDeltaTime(dates):
     list_of_deltas = []
@@ -67,13 +28,7 @@ def ConvertListOfDeltaToListOfSeconds(deltas):
         list_of_deltaseconds.append(deltasecond.seconds + deltasecond.microseconds*0.00001) 
     return list_of_deltaseconds
 
-def GetContinuousFunction(x,y):
-    xfine = np.linspace(0,30)    
-    yinterp = np.interp(xfine,x,y)    
-    return yinterp
-
-
-def PlotInterpolateAnd2Derivates(x,interpolate, derivate, derivate2,paciente,nomeDoArquivo):
+def GerarGraficosDerivadas(x,interpolate, derivate, derivate2,paciente,nomeDoArquivo):
 
     titulo = 'Medição Respiratória Paciente: ' + paciente
     plt.figure()
@@ -100,8 +55,6 @@ def PlotInterpolateAnd2Derivates(x,interpolate, derivate, derivate2,paciente,nom
 
     plt.savefig(nomeDoArquivo)
     plt.close
-
-
 
 def GerarGráficosDeEquacaoDeDiferencas(x,y, df, df2,paciente,nomeDoArquivo):
 
@@ -143,40 +96,51 @@ def GeraEquacaoDeDiferencas(x,y):
     return df
 
 
+def CriarNovoDiretorio(path):
+    try:
+        os.makedirs(path)
+    except OSError:
+        print ("Creation of the directory %s failed" % path)
+    else:
+        print ("Successfully created the directory %s " % path)
+
+
 filename = "teste.png"
 datas = ['22:00:24.509','22:00:25.527','22:00:26.512','22:00:27.526','22:00:28.511','22:00:29.529','22:00:30.515','22:00:31.532','22:00:32.519','22:00:33.536','22:00:34.520','22:00:35.538','22:00:36.526','22:00:37.548','22:00:38.530','22:00:39.547','22:00:40.533','22:00:41.555','22:00:42.538','22:00:43.560','22:00:44.548','22:00:45.568','22:00:46.555','22:00:47.542','22:00:48.559','22:00:49.572','22:00:50.561','22:00:51.573','22:00:52.554']
 y = [1023,1023,1022,1023,1023,1023,1023,1022,1023,1022,1023,1023,997,1007,1022,1009,1006,1016,1023,1012,997,1003,1013,1003,985,993,1008,1018,1023]
 delta = GetDeltaTime(datas)
 x = ConvertListOfDeltaToListOfSeconds(delta)
-#fy = GetContinuousFunction(delta,values)
 
-
-
-# #função de teste
-# x = [-9,-8,-7,-6,-5,-4,-3,-2,-1,0,1,2,3,4,5,6,7,8,9,10]
-# y = []
-# for i in x:    
-#     y.append(pow(i,3))  
+#função de teste
+x = [-9,-8,-7,-6,-5,-4,-3,-2,-1,0,1,2,3,4,5,6,7,8,9,10]
+y = []
+for i in x:    
+    y.append(pow(i,3))  
 
 #Condições iniciais
-paciente = 'Bruno'
+print('Digite o nome do Paciente:')
+paciente = input()
+subpasta = os.getcwd() + "\\" + "Medições" + "\\" + paciente + "\\" + datetime.datetime.now().strftime("%y-%m-%d - %H%M%S") + "\\"
+print(subpasta)
+if not os.path.exists(subpasta):
+    CriarNovoDiretorio(subpasta)
 plt.figure()
 plt.plot(x,y,'b^')
-plt.savefig('Função original')
+plt.savefig(subpasta + 'Função original')
 
 #Interpolador de Lagrange
 lagrangeinterpolate = interpolate.lagrange(x,y)
 lagrangeDerivate = lagrangeinterpolate.deriv()
 lagrangeDerivate2 = lagrangeDerivate.deriv()
-PlotInterpolateAnd2Derivates(x,lagrangeinterpolate, lagrangeDerivate, lagrangeDerivate2,paciente,"Interpolação por Lagrange")
+GerarGraficosDerivadas(x,lagrangeinterpolate, lagrangeDerivate, lagrangeDerivate2,paciente, subpasta +  "Interpolação por Lagrange")
 
 #derivando por equaçaõ de diferenças  
 df = GeraEquacaoDeDiferencas(x,y)
 df2 = GeraEquacaoDeDiferencas(x,df)
-GerarGráficosDeEquacaoDeDiferencas(x,y, df, df2,paciente,'Equações de Diferenças')
+GerarGráficosDeEquacaoDeDiferencas(x,y, df, df2,paciente,subpasta + 'Equações de Diferenças')
 
 #UnivariateSpline
 UnivariateSplineInterpolate = interpolate.UnivariateSpline(x,y)
 UnivariateSplineDerivate = UnivariateSplineInterpolate.derivative()
 UnivariateSplineDerivate2 = UnivariateSplineInterpolate.derivative(2)
-PlotInterpolateAnd2Derivates(x,UnivariateSplineInterpolate, UnivariateSplineDerivate, UnivariateSplineDerivate2,paciente,"Interpolação por UnivariateSpline")
+GerarGraficosDerivadas(x,UnivariateSplineInterpolate, UnivariateSplineDerivate, UnivariateSplineDerivate2,paciente,subpasta + "Interpolação por UnivariateSpline")
