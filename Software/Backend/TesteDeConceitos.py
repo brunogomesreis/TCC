@@ -7,12 +7,16 @@
 #         4.2- Plotar uma interpolação
 #         4.3- Calcular a derivada primeira e segunda e plotar
 #         4.4- Fazer uma FFT e plotar
-#     5- Ler o arquivo csv, passar por um filtro passa baixas, salvar um novo csv e realizar as seguintes operações:
+#     5- Ler o arquivo csv, passar por um filtro IIR passa baixas, salvar um novo csv e realizar as seguintes operações:
 #         5.1- Plotar diretamente
 #         5.2- Plotar uma interpolação
 #         5.3- Calcular a derivada primeira e segunda e plotar
 #         5.4- Fazer uma FFT e plotar
-
+#     6- Ler o arquivo csv, passar por um filtro IIR passa baixas, salvar um novo csv e realizar as seguintes operações:
+#         6.1- Plotar diretamente
+#         6.2- Plotar uma interpolação
+#         6.3- Calcular a derivada primeira e segunda e plotar
+#         6.4- Fazer uma FFT e plotar
 
 import numpy as np
 import matplotlib.pyplot as plt
@@ -20,6 +24,28 @@ import csv
 import os
 import datetime
 from scipy.fftpack import fft
+from scipy import signal 
+
+
+
+
+#Funções
+def gerarCsv(x,y,endereco):
+    with open(endereco + "\\teste_de_conceitos_data.csv", mode='w') as csv_file:
+        fieldnames = ['time', 'value']
+        writer = csv.DictWriter(csv_file, fieldnames=fieldnames)
+        writer.writeheader()
+        for time in range(0,len(x),1):
+            writer.writerow({'time': x[time], 'value': y[time]})
+
+
+
+
+
+
+
+
+
 
 # Simulando a etapa 1
 #Gerando um sinal padrão para testes
@@ -42,22 +68,18 @@ print('Digite o nome do Paciente:')
 paciente = input()
 subpasta = os.getcwd() + "\\" + "Medições" + "\\" + paciente + "\\" + datetime.datetime.now().strftime("%y-%m-%d - %H%M%S") + "\\"
 pastaOriginal = "Sinal Original\\"
-pastaFiltrado = "Sinal Filtrado\\"
+pastaIIR = "Sinal Filtrado IIR\\"
+pastaFIR = "Sinal Filtrado FIR\\"
 print(subpasta)
 if not os.path.exists(subpasta):
     CriarNovoDiretorio(subpasta)
     CriarNovoDiretorio(subpasta + pastaOriginal)
-    CriarNovoDiretorio(subpasta + pastaFiltrado)
+    CriarNovoDiretorio(subpasta + pastaIIR)
+    CriarNovoDiretorio(subpasta + pastaFIR)
 
 
 #Etapa 3
-with open(subpasta + pastaOriginal + "\\teste_de_conceitos_data.csv", mode='w') as csv_file:
-    fieldnames = ['time', 'value']
-    writer = csv.DictWriter(csv_file, fieldnames=fieldnames)
-    writer.writeheader()
-    for time in range(0,len(x),1):
-        writer.writerow({'time': x[time], 'value': y[time]})
-
+gerarCsv(x,y,subpasta + pastaOriginal)
 
 #Etapa 4
 #4.1
@@ -125,3 +147,47 @@ xf = np.linspace(0.0, 1.0/(2.0*T), N//2)
 plt.figure()
 plt.plot(xf, 2.0/N * np.abs(yf[0:N//2]))
 plt.savefig(subpasta + pastaOriginal + 'FFT')
+
+
+#5
+b, a = signal.butter(3, 0.5)
+zi = signal.lfilter_zi(b,a)
+y_filtrado, _ = signal.lfilter(b,a, y, zi=zi*y[0])
+gerarCsv(x,y_filtrado,subpasta + pastaIIR )
+
+
+#5.1
+plt.figure()
+plt.plot(x,y_filtrado,'ro')
+plt.xlabel('Tempo (s)')
+plt.ylabel('Sinal de entrada (int)')
+plt.savefig(subpasta + pastaIIR + 'Função original')
+
+#5.2
+plt.figure()
+plt.plot(x,y_filtrado,color='black')
+plt.xlabel('Tempo (s)')
+plt.ylabel('Sinal de entrada (int)')
+plt.savefig(subpasta + pastaIIR + 'Função original Interpolada')
+
+#5.4
+yf2 = fft(y_filtrado)
+plt.figure()
+plt.plot(xf, 2.0/N * np.abs(yf2[0:N//2]), 'r')
+plt.savefig(subpasta + pastaIIR + 'FFT')
+
+
+
+#6
+c = signal.firwin(N, 0.1)
+y_filtrado2 = signal.lfilter(c,[1.0], y)
+gerarCsv(x,y_filtrado,subpasta + pastaFIR )
+
+
+
+#6.4
+yf3 = fft(y_filtrado2)
+
+plt.figure()
+plt.plot(xf, 2.0/N * np.abs(yf3[0:N//2]), 'r')
+plt.savefig(subpasta + pastaFIR + 'FFT')

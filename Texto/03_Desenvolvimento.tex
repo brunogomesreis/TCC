@@ -164,8 +164,55 @@ O comportamento esperado para o circuito de controle seria o seguinte: O amplifi
 		\label{fig:RespostaCircuitoRealimentadoLongoPrazo}
 	\end{center}
 \end{figure}
-
+\FloatBarrier
 
 %\section{A fonte de tensão}
  
  
+\section{O Software}
+
+Em paralelo ao desenvolvimento do hardware, foi desenvolvido um software capaz de obter os dados de um microcontrolador através de uma porta serial no computador. Dada a escolha do Arduíno para o desenvolvimento do protótipo de baixo custo, era possível abstrair o desenvolvimento do hardware pressupondo, de antemão, que o circuito deveria ser projetado para entregar à entrada analógica do Arduíno um sinal de tensão variante entre $0V$ e $5V$. Para interpretar esse sinal, o microcontrolador existente no Arduíno (ATmega328) converte o sinal analógico em digital. A resolução do sinal convertido é dada pela equação \ref{eq:resolucaoArduino}, sendo o valor da tensão de referência igual a $5V$ e a quantidade de bits disponível para conversão igual a $10bits$, chegamos a uma resolução de $4,48mV$. Em outras palavras, abstraindo do hardware, o software deveria ser programado para ser capaz de receber uma entrada pela porta serial e ler sinais inteiros variando entre  $0$ e $1024$ (Equivalente a $10bits$) onde cada variação inteira representa $4,48mV$ do sinal de entrada do Arduíno.
+
+
+\begin{equation} \label{eq:resolucaoArduino}
+	Resolucao = \dfrac{V_{ref}}{2^n}
+\end{equation}
+Onde:
+\begin{itemize}[label=]
+	\item $V_{ref}$: Tensão de referência
+	\item $n$: Número de bits do conversor
+\end{itemize} 
+
+A linguagem de programação escolhida para o desenvolvimento do software foi o Python dada a sua notória ascensão e eficiência para a realização de operações matemáticas e tratamento de dados científicos, além de ser referência em áreas como inteligência artificial (o que viabilizaria estudos futuros nessa área).
+
+Após o processo de conversão analógico/digital, os dados são lidos pelo programa e armazenados em dois vetores, um contendo os valores inteiros referentes à amostragem da tensão e outro contendo strings com informações sobre o instante de coleta do dado. A partir desses valores, o programa converte o vetor de strings para o formato datetime e, em seguida, realiza do cálculo para obter um número referente à variação em segundos, considerando o instante inicial como $t=0s$. Após obter o tempo em segundos, o sistema, além de salvar em um gráfico o valor de entrada obtido para cada unidade de tempo equivalente em sua forma original (figura \ref{fig:funcaoOriginal}), realiza operações matemáticas com a finalidade de entregar ao pesquisador insumos para o estudo do comportamento respiratório. Para a melhor visualização dos dados em sua forma gráfica, o sistema também realiza uma interpolação dos dados, para auxiliar o pesquisador na análise do gráfico (Figura \ref{fig:funcaoOriginalInterpolada}).
+
+
+\begin{figure}[h!]
+	\begin{center}
+		\includegraphics[width=1\linewidth]{images/funcao_original.png}
+		\caption{Gráfico da aquisição original de um sinal aleatório}
+		\label{fig:funcaoOriginal}
+	\end{center}
+\end{figure}
+
+\begin{figure}[h!]
+	\begin{center}
+		\includegraphics[width=1\linewidth]{images/funcao_original_interpolada.png}
+		\caption{Gráfico interpolado da aquisição original de um sinal aleatório}
+		\label{fig:funcaoOriginalInterpolada}
+	\end{center}
+\end{figure}
+
+\subsection{Polinômio de Lagrange}
+
+A visualização dos dados interpolados pode ser gerado automaticamente pela biblioteca matplotlib \footnote{https://matplotlib.org/}, porém, para a realização do cálculo das derivadas, também foi programada uma interpolação utilizando o polinômio de Lagrange, dando ao pesquisador mais insumos às suas análises. A interpolação polinomial de Lagrange consiste em aproximar uma função contínua por um polinômio de grau $m - 1$, sendo $m$ a quantidade de pontos nodais. O erro da função nos pontos nodais é zero, ou seja, o polinômio toca todos os pontos. Em termos práticos, com uma grande quantidade de pontos, o polinômio de Lagrange tende a ser uma réplica precisa da equação original, entretanto, erros na aquisição dos dados são refletidos também na equação interpolada, ao contrário de uma análise de regressão linear. A forma direta para a geração do polinômio de Lagrange pode ser dada pela equação 
+
+\begin{equation} \label{eq:}
+Resolucao = \dfrac{V_{ref}}{2^n}
+\end{equation}
+Onde:
+\begin{itemize}[label=]
+	\item $V_{ref}$: Tensão de referência
+	\item $n$: Número de bits do conversor
+\end{itemize} 
