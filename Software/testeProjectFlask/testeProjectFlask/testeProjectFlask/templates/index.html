@@ -1,0 +1,44 @@
+{% extends "layout.html" %}
+
+{% block content %}
+
+<div class="row" style="margin: 15px -15px 15px 0px">
+    <div class="col-md-1">
+        <img alt="User icon" src="../static/images/user.png" class="" width="50" height="50" />
+    </div>
+    <div class="col-md-11">
+        <p>Experimento: {{ selectedExperiment }}</p>
+        <p>Paciente: {{ selectedPatient }}</p>
+    </div>
+</div>
+
+<div class="jumbotron">
+    <div class="chart" id="bargraph">
+        <script>
+            var graphs={{ plot |safe}};
+            Plotly.plot('bargraph',graphs,{});
+        </script>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-4">
+        <h2>Equa&ccedil&atildeo de diferen&ccedilas</h2>
+        <div class="tooltip">
+            <p><a class="btn btn-default" href="http://flask.pocoo.org/docs/">Gerar Gr&aacutefico &raquo;</a></p>
+            <span class="tooltiptext">$$ f'(x) =  \sum_{X0}^{Xn} \dfrac{f(x+\Delta x) - f(x)}{\Delta x} $$</span>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <h2 style="align-content:center; align-items:center; align-self:center">An&aacutelise de Fourier</h2>
+        <p><a class="btn btn-default" href="https://pypi.python.org/pypi">Gerar gr&aacutefico &raquo;</a></p>
+    </div>
+    <div class="col-md-4">
+        <h2>Original</h2>
+        <p><a class="btn btn-default" href="http://azure.microsoft.com">Gerar Gr&aacutefico &raquo;</a></p>
+    </div>
+</div>
+
+<!--<script src="../static/scripts/index-controller.js"></script>-->
+
+{% endblock %}

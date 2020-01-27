@@ -1,0 +1,74 @@
+{% extends "layout.html" %}
+
+{% block content %}
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-12">
+            <h3>
+                Tela de Cadastros
+            </h3>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+            <form role="form">
+                <div class="form-group">
+                    <label for="cpfPaciente">
+                        CPF
+                    </label>
+                    <input type="number" class="form-control" id="cpfPaciente" />
+                </div>
+                <div class="form-group">
+
+                    <label for="nomePaciente">
+                        Nome
+                    </label>
+                    <select type="text" class="form-control" id="listaNomePaciente">
+                        {% for name in names %}
+                        <option value="{{name}}" SELECTED>{{name}}</option>"
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <button type="submit" class="btn btn-primary">
+                    Submit
+                </button>
+            </form>
+        </div>
+        <div class="col-md-6">
+            <form role="form">
+                <div class="form-group">
+
+                    <label for="rgPaciente">
+                        RG
+                    </label>
+                    <input type="number" class="form-control" id="rgPaciente" />
+                </div>
+                <div class="form-group">
+
+                    <label for="emailPaciente">
+                        E-mail
+                    </label>
+                    <input type="email" class="form-control" id="emailPaciente" />
+                </div>
+                <div class="form-group">
+
+                    <label for="exampleInputFile">
+                        Adicionar experimento
+                    </label>
+                    <input type="file" class="form-control-file" id="exampleInputFile" />
+                    <p class="help-block">
+                        Selecione o arquivo csv com os dados do experimento.
+                    </p>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+        </div>
+    </div>
+</div>
+
+{% endblock %}
