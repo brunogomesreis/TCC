@@ -26,9 +26,6 @@ import datetime
 from scipy.fftpack import fft
 from scipy import signal 
 
-
-
-
 #Funções
 def gerarCsv(x,y,endereco):
     with open(endereco + "\\teste_de_conceitos_data.csv", mode='w') as csv_file:
@@ -38,14 +35,43 @@ def gerarCsv(x,y,endereco):
         for time in range(0,len(x),1):
             writer.writerow({'time': x[time], 'value': y[time]})
 
+def GerarGráficosDeEquacaoDeDiferencas(x,y,df,df2,xlim,paciente,nomeDoArquivo):
+    
+    titulo = 'Medição Respiratória Paciente: ' + paciente
+    plt.figure()
 
+    ax1 = plt.subplot(311)
+    plt.title(titulo)
+    plt.ylabel('Interpolação')
+    plt.grid(True)
+    plt.plot(x,y,color='black')    
+    plt.setp(ax1.get_xticklabels(), visible=False)
 
+    ax2 = plt.subplot(312, sharex=ax1)
+    plt.grid(True)
+    plt.ylabel('Derivada 1')
+    plt.plot(x,df, color='blue')
+    plt.setp(ax2.get_xticklabels(), visible=False)
 
+    ax3 = plt.subplot(313, sharex=ax1)
+    plt.ylabel('Derivada 2')
+    plt.xlabel('Tempo (s)')
+    plt.grid(True)
+    plt.plot(x,df2, color='red')
+    plt.setp(ax3.get_xticklabels())
 
+    plt.savefig(nomeDoArquivo)
 
-
-
-
+def GeraEquacaoDeDiferencas(x,y):
+    df =  np.zeros_like(x)       # df/dx
+    dx = x[1] - x[0]
+    # Internal mesh points
+    for i in range(1, len(x) - 1):
+        df[i] = (y[i+1] - y[i-1])/(2*dx)
+    # End points
+    df[0]  = (y[1]  - y[0]) /dx
+    df[-1] = (y[-1] - y[-2])/dx
+    return df
 
 # Simulando a etapa 1
 #Gerando um sinal padrão para testes
@@ -53,6 +79,8 @@ N = 600                 #Numero de pontos
 T = 0.05                #Taxa de amostragem
 x = np.linspace(0.0, N*T, N)
 y = np.sin(0.15 * 2.0*np.pi*x)  + 0.8*np.sin(np.pi/2 + 0.3 * 2.0*np.pi*x) + 0.1*np.sin(np.pi/2 + 30 * 2.0*np.pi*x)
+y2 = np.sin(0.15 * 2.0*np.pi*x)
+y3 = 0.8*np.sin(np.pi/2 + 0.3 * 2.0*np.pi*x)
 
 
 #Etapa 2
@@ -92,49 +120,12 @@ plt.savefig(subpasta + pastaOriginal + 'Função original')
 #4.2
 plt.figure()
 plt.plot(x,y,color='black')
+
 plt.xlabel('Tempo (s)')
 plt.ylabel('Sinal de entrada (int)')
 plt.savefig(subpasta + pastaOriginal + 'Função original Interpolada')
 
 #4.3
-def GerarGráficosDeEquacaoDeDiferencas(x,y,df,df2,xlim,paciente,nomeDoArquivo):
-    
-    titulo = 'Medição Respiratória Paciente: ' + paciente
-    plt.figure()
-
-    ax1 = plt.subplot(311)
-    plt.title(titulo)
-    plt.ylabel('Interpolação')
-    plt.grid(True)
-    plt.plot(x,y,color='black')    
-    plt.setp(ax1.get_xticklabels(), visible=False)
-
-    ax2 = plt.subplot(312, sharex=ax1)
-    plt.grid(True)
-    plt.ylabel('Derivada 1')
-    plt.plot(x,df, color='blue')
-    plt.setp(ax2.get_xticklabels(), visible=False)
-
-    ax3 = plt.subplot(313, sharex=ax1)
-    plt.ylabel('Derivada 2')
-    plt.xlabel('Tempo (s)')
-    plt.grid(True)
-    plt.plot(x,df2, color='red')
-    plt.setp(ax3.get_xticklabels())
-
-    plt.savefig(nomeDoArquivo)
-
-def GeraEquacaoDeDiferencas(x,y):
-    df =  np.zeros_like(x)       # df/dx
-    dx = x[1] - x[0]
-    # Internal mesh points
-    for i in range(1, len(x) - 1):
-        df[i] = (y[i+1] - y[i-1])/(2*dx)
-    # End points
-    df[0]  = (y[1]  - y[0]) /dx
-    df[-1] = (y[-1] - y[-2])/dx
-    return df
-
 #derivando por equaçaõ de diferenças  
 df = GeraEquacaoDeDiferencas(x,y)
 df2 = GeraEquacaoDeDiferencas(x,df)
@@ -170,6 +161,11 @@ plt.xlabel('Tempo (s)')
 plt.ylabel('Sinal de entrada (int)')
 plt.savefig(subpasta + pastaIIR + 'Função original Interpolada')
 
+#5.3
+df = GeraEquacaoDeDiferencas(x,y_filtrado)
+df2 = GeraEquacaoDeDiferencas(x,df)
+GerarGráficosDeEquacaoDeDiferencas(x,y_filtrado,df,df2,N*T,paciente,subpasta + pastaIIR + 'Equações de Diferenças')
+
 #5.4
 yf2 = fft(y_filtrado)
 plt.figure()
@@ -181,9 +177,26 @@ plt.savefig(subpasta + pastaIIR + 'FFT')
 #6
 c = signal.firwin(N, 0.1)
 y_filtrado2 = signal.lfilter(c,[1.0], y)
-gerarCsv(x,y_filtrado,subpasta + pastaFIR )
+gerarCsv(x,y_filtrado2,subpasta + pastaFIR )
 
+#6.1
+plt.figure()
+plt.plot(x,y_filtrado2,'ro')
+plt.xlabel('Tempo (s)')
+plt.ylabel('Sinal de entrada (int)')
+plt.savefig(subpasta + pastaFIR + 'Função original')
 
+#6.2
+plt.figure()
+plt.plot(x,y_filtrado2,color='black')
+plt.xlabel('Tempo (s)')
+plt.ylabel('Sinal de entrada (int)')
+plt.savefig(subpasta + pastaFIR + 'Função original Interpolada')
+
+#6.3
+df = GeraEquacaoDeDiferencas(x,y_filtrado2)
+df2 = GeraEquacaoDeDiferencas(x,df)
+GerarGráficosDeEquacaoDeDiferencas(x,y_filtrado2,df,df2,N*T,paciente,subpasta + pastaFIR + 'Equações de Diferenças')
 
 #6.4
 yf3 = fft(y_filtrado2)

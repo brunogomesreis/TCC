@@ -3,7 +3,7 @@
 {% block content %}
 
 
-
+<script async src="/static/scripts/cadastro-controller.js"></script>
 <div class="container-fluid">
     <div class="row">
         <div class="col-md-12">
@@ -25,12 +25,12 @@
                 <div class="form-group">
 
                     <label for="rgPaciente">
-                        RG
+                        Data de nascimento
                     </label>
-                    <input type="number" class="form-control" id="rgPaciente" />
+                    <input type="date" class="form-control" id="nascimentoPaciente" />
                 </div>
-                <button type="submit" class="btn btn-primary">
-                    Submit
+                <button type="button" class="btn btn-primary" onclick="salvar()">
+                    Salvar
                 </button>
             </form>
         </div>
@@ -49,16 +49,6 @@
                         E-mail
                     </label>
                     <input type="email" class="form-control" id="emailPaciente" />
-                </div>
-                <div class="form-group">
-
-                    <label for="exampleInputFile">
-                        Adicionar experimento
-                    </label>
-                    <input type="file" class="form-control-file" id="exampleInputFile" />
-                    <p class="help-block">
-                        Selecione o arquivo csv com os dados do experimento.
-                    </p>
                 </div>
             </form>
         </div>

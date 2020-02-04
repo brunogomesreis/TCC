@@ -12,6 +12,7 @@ from flask_pymongo import PyMongo
 import pandas as pd
 import numpy as np
 import json
+from flask import request
 
 #mongo = PyMongo(app)
 #mongo.init_app(app)
@@ -26,17 +27,14 @@ def create_plot():
     df = pd.DataFrame({'x': x, 'y': y}) # creating a sample dataframe
 
 
-    data = [
-        #go.Bar(
+    data = [#go.Bar(
         #    x=df['x'], # assign x as the dataframe column 'x'
         #    y=df['y']
         #)
-        go.Scatter(
-                    x = df['x'],
+        go.Scatter(x = df['x'],
                     y = df['y'],
                     #mode = 'markers'
-                )
-    ]
+                )]
 
     graphJSON = json.dumps(data, cls=plotly.utils.PlotlyJSONEncoder)
 
@@ -49,33 +47,43 @@ def home():
     """Renders the home page."""
 
     bar = create_plot()
-    return render_template(
-        'index.html', 
+    return render_template('index.html', 
         plot=bar,
-        selectedExperiment = "saparada de teste"
-)
+        selectedExperiment = "saparada de teste")
 
 
-@app.route('/cadastro')
+@app.route('/cadastro', methods=["GET","POST"])
 def cadastro():
     """Renders the contact page."""    
+    print('saparada')
+    if request.method == "POST":
+        data = json.loads(request.form['data'])    
 
-    return render_template(
-        'cadastro.html',
+        #print(request.form['paciente'])
+        print('iniciando o insert')
+        users.update({"cpf": data['cpf']},
+            {"$set": json.loads(request.form['data'])},
+            w=1, upsert=True)
+
+        return render_template('cadastro.html',
         title='Cadastro',
-        year=datetime.now().year,
-    )
+        year=datetime.now().year,)
+
+
+    return render_template('cadastro.html',
+        title='Cadastro',
+        year=datetime.now().year,)
 
 @app.route('/about')
 def about():
     """Renders the about page."""
 
-    return render_template(
-        'about.html',
+    return render_template('about.html',
         title='About',
         year=datetime.now().year,
-        names = ["teste","saparada","DJ"]
-    )
+        names = ["teste","saparada","DJ"])
+
+
 
 #@app.route('/cadastro', methods = ['GET', 'POST', 'DELETE'])
 #def cadastro
