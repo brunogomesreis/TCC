@@ -43,8 +43,3 @@ function TestaCPF(strCPF) {
     if(Resto!=parseInt(strCPF.substring(10,11))) return false;
     return true;
 }
-
-
-$(document).ready(function() {
-    $("#cpfPaciente").mask("999.999.999-99");
-});

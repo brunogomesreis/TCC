@@ -44,7 +44,6 @@ def create_plot():
 @app.route('/')
 @app.route('/home')
 def home():
-    """Renders the home page."""
 
     bar = create_plot()
     return render_template('index.html', 
@@ -53,14 +52,10 @@ def home():
 
 
 @app.route('/cadastro', methods=["GET","POST"])
-def cadastro():
-    """Renders the contact page."""    
-    print('saparada')
-    if request.method == "POST":
-        data = json.loads(request.form['data'])    
+def cadastro():  
 
-        #print(request.form['paciente'])
-        print('iniciando o insert')
+    if request.method == "POST":
+        data = json.loads(request.form['data'])            
         users.update({"cpf": data['cpf']},
             {"$set": json.loads(request.form['data'])},
             w=1, upsert=True)
@@ -74,16 +69,20 @@ def cadastro():
         title='Cadastro',
         year=datetime.now().year,)
 
-@app.route('/about')
-def about():
-    """Renders the about page."""
+@app.route('/experimento')
+def experimento():
 
-    return render_template('about.html',
-        title='About',
+    #pacientes = users.find()
+    #for paciente in testes:
+    #    print(teste['nome'])
+
+    return render_template('experimento.html',
+        pacientes = users.find(),
+        title='Experimento',
         year=datetime.now().year,
         names = ["teste","saparada","DJ"])
 
-
-
-#@app.route('/cadastro', methods = ['GET', 'POST', 'DELETE'])
-#def cadastro
+@app.route('/teste/<cpf>')
+def teste(cpf):
+    user = users.find_one_or_404({"cpf": cpf})
+    return user['email']
