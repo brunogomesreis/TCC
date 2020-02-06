@@ -58,7 +58,7 @@ input[type="checkbox"].input-validation-error {
     border-radius: 6px;
     padding: 5px 0;
     position: absolute;
-    z-index: 1;
+    z-index: 100000;
     top: -22px;
     left: 110%;
 }
@@ -81,4 +81,8 @@ input[type="checkbox"].input-validation-error {
 
 .biel{
     z-index: 10100;
+}
+
+.biel-negativo {
+    z-index: -1;
 }

@@ -18,13 +18,16 @@ def home():
         patientName = request.args.get('paciente')
         experimentName = request.args.get('experimento')
         operation = request.args.get('operacao')
+        filtro = request.args.get('filtro')
         measure = file_controller.getMeasure(experimentName,patientName)
         if (operation == 'derivada'):
-            bar = opc.create_derivate_plot(measure)
+            bar = opc.create_derivate_plot(measure,filtro)
         elif (operation == 'fft'):
-             bar = opc.create_fft_plot(measure)
+             bar = opc.create_fft_plot(measure,filtro)
+        elif (operation == 'interpolado'):
+             bar = opc.create_interpolated_plot(measure,filtro)
         else:
-            bar = opc.create_plot(measure)
+            bar = opc.create_plot(measure,filtro)
         return bar
     else:
         bar = opc.create_random_plot()

@@ -23,34 +23,78 @@ class operations_controller(object):
         df[-1] = (y[-1] - y[-2]) / dx
         return df
 
-    def create_plot(self,measure):
-
-
-        x = measure['x']
-        y = measure['y']
-        df = pd.DataFrame({'x': x, 'y': y}) # creating a sample dataframe
-
-
-        data = [#go.Bar(
-            #    x=df['x'], # assign x as the dataframe column 'x'
-            #    y=df['y']
-            #)
-            go.Scatter(x = df['x'],
-                        y = df['y'],
-                        mode = 'markers')]
-
-        graphJSON = json.dumps(data, cls=plotly.utils.PlotlyJSONEncoder)
-
-        return graphJSON
-
-
-    def create_derivate_plot(self, measure):
+    def create_interpolated_plot(self,measure,filtro):
 
 
         x = measure['x']
         y = measure['y']
         x = list(map(float, x))
         y = list(map(float, y))
+        if(filtro == 'filtroIIR'):
+            y = list(self.applyIIRFilter(y))
+        if(filtro == 'filtroFIR'):
+            y = list(self.applyFIRFilter(x,y))
+
+        data = [{
+            'x': x,
+            'y': y,
+            'type': 'scatter',
+            'name': 'Interpolada'
+            }]
+
+        layout = {}
+
+        data = {
+            'data': data,
+            'layout': layout
+        }
+
+        graphJSON = json.dumps(data, cls=plotly.utils.PlotlyJSONEncoder)
+
+        return graphJSON
+    def create_plot(self,measure,filtro):
+
+
+        x = measure['x']
+        y = measure['y']
+        x = list(map(float, x))
+        y = list(map(float, y))
+        if(filtro == 'filtroIIR'):
+            y = list(self.applyIIRFilter(y))
+        if(filtro == 'filtroFIR'):
+            y = list(self.applyFIRFilter(x,y))
+
+        data = [{
+            'x': x,
+            'y': y,
+            'type': 'scatter',
+            'mode': 'markers',
+            'name': 'Interpolada'
+            }]
+
+        layout = {}
+
+        data = {
+            'data': data,
+            'layout': layout
+        }
+
+        graphJSON = json.dumps(data, cls=plotly.utils.PlotlyJSONEncoder)
+
+        return graphJSON
+
+
+    def create_derivate_plot(self, measure,filtro):
+
+
+        x = measure['x']
+        y = measure['y']
+        x = list(map(float, x))
+        y = list(map(float, y))
+        if(filtro == 'filtroIIR'):
+            y = list(self.applyIIRFilter(y))
+        if(filtro == 'filtroFIR'):
+            y = list(self.applyFIRFilter(x,y))
         dy = self.GeraEquacaoDeDiferencas(x,y)
         dy2 = self.GeraEquacaoDeDiferencas(x,dy)
         dy2 = dy2[3:-2]
@@ -116,12 +160,16 @@ class operations_controller(object):
 
         return graphJSON
 
-    def create_fft_plot(self, measure):
+    def create_fft_plot(self, measure,filtro):
 
         x = measure['x']
         y = measure['y']
         x = list(map(float, x))
         y = list(map(float, y))
+        if(filtro == 'filtroIIR'):
+            y = list(self.applyIIRFilter(y))
+        if(filtro == 'filtroFIR'):
+            y = list(self.applyFIRFilter(x,y))
         yf = fft(y)
         T = 0.05
         N = int(x[-1]/T)
@@ -154,6 +202,16 @@ class operations_controller(object):
 
         return graphJSON
 
+    def applyIIRFilter(self,y):
+        b, a = signal.butter(3, 0.5)
+        zi = signal.lfilter_zi(b,a)
+        y_filtrado, _ = signal.lfilter(b,a, y, zi=zi*y[0])
+        return y_filtrado
 
-
+    def applyFIRFilter(self,x,y):
+        T = 0.05
+        N = int(x[-1]/T)
+        c = signal.firwin(N, 0.1)
+        y_filtrado = signal.lfilter(c,[1.0], y)
+        return y_filtrado        
 

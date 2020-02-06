@@ -6,10 +6,20 @@
     <div class="col-md-1">
         <img alt="User icon" src="../static/images/user.png" class="" width="50" height="50" />
     </div>
-    <div class="col-md-11">
-        
+    <div class="col-md-8">
+
         <p>Experimento: <button id="nomeExperimento" type="button" class="btn btn-link" data-toggle="popover" data-placement="bottom" title="Pacientes">Experimento </button></p>
         <p>Paciente: <button id="nomePaciente" type="button" class="btn btn-link" data-toggle="popover" data-placement="bottom" title="Pacientes">Paciente </button></p>
+    </div>
+    <div class="col-md-3">
+        <label for="nomePaciente">
+            Filtro
+        </label>
+        <select type="text" class="form-control" id="listaFiltros">
+            <option id="filtroOriginal" value="Original" SELECTED>filtroOriginal</option>"
+            <option id="filtroIIR" value="IIR" SELECTED>filtroIIR</option>"
+            <option id="filtroFIR" value="FIR" SELECTED>filtroFIR</option>"
+        </select>
     </div>
 </div>
 
@@ -23,20 +33,23 @@
 </div>
 
 <div class="row">
-    <div class="col-md-4">
-        <h2>Equa&ccedil&atildeo de diferen&ccedilas</h2>
+    <div class="col-md-3">
         <div class="tooltip">
-            <p><button class="btn btn-default" onclick="gerarGraficoOriginal('derivada')">Gerar Gr&aacutefico &raquo;</button></p>
-            <span class="tooltiptext">$$ f'(x) =  \sum_{X0}^{Xn} \dfrac{f(x+\Delta x) - f(x)}{\Delta x} $$</span>
+            <p><button class="btn btn-info button-center" onclick="gerarGraficoOriginal('derivada')">Equa&ccedil&atildeo de diferen&ccedilas &raquo;</button></p>
+            <span class="tooltiptext biel">$$ f'(x) =  \sum_{X0}^{Xn} \dfrac{f(x+\Delta x) - f(x)}{\Delta x} $$</span>
         </div>
     </div>
-    <div class="col-md-4">
-        <h2 style="align-content:center; align-items:center; align-self:center">An&aacutelise de Fourier</h2>
-        <p><button class="btn btn-default" onclick="gerarGraficoOriginal('fft')">Gerar Gr&aacutefico &raquo;</button></p>
+    <div class="col-md-3">
+        <p><button class="btn btn-info button-center" onclick="gerarGraficoOriginal('interpolado')">Interpolado &raquo;</button></p>
     </div>
-    <div class="col-md-4">
-        <h2>Original</h2>
-        <p><button class="btn btn-default" onclick="gerarGraficoOriginal('original')">Gerar Gr&aacutefico &raquo;</button></p>
+    <div class="col-md-3">
+        <div class="tooltip">
+            <p><button class="btn btn-info button-center" onclick="gerarGraficoOriginal('fft')">An&aacutelise de Fourier&raquo;</button></p>
+            <span class="tooltiptext">$$ \left \{ f(t) \right \}  = \int_{-\infty}^{\infty} f(t) e^{-j \omega t} $$</span>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <p><button class="btn btn-info button-center" onclick="gerarGraficoOriginal('original')">Quantizado &raquo;</button></p>
     </div>
 </div>
 
@@ -62,4 +75,4 @@
 </div>
 
 <!--<script src="../static/scripts/index-controller.js"></script>-->
-{% endblock %}
+    {% endblock %}
