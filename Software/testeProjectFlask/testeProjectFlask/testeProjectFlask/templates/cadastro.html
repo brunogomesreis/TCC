@@ -36,12 +36,12 @@
         </div>
         <div class="col-md-6">
             <form role="form">
-                <div class="form-group">
+                <div class="form-group has-feedback" id="cpfPacienteGroup">
 
                     <label for="cpfPaciente">
                         CPF
                     </label>
-                    <input type="number" class="form-control" id="cpfPaciente" />
+                    <input type="number" class="form-control" id="cpfPaciente" onchange="mudaCampo(this.value)" />
                 </div>
                 <div class="form-group">
 

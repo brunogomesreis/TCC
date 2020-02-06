@@ -78,3 +78,7 @@ input[type="checkbox"].input-validation-error {
     border-style: solid;
     border-color: transparent black transparent transparent;
 }
+
+.biel{
+    z-index: 10100;
+}

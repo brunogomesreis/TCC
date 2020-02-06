@@ -1,19 +1,20 @@
 {% extends "layout.html" %}
 
 {% block content %}
-
+<script async src="/static/scripts/index-controller.js"></script>
 <div class="row" style="margin: 15px -15px 15px 0px">
     <div class="col-md-1">
         <img alt="User icon" src="../static/images/user.png" class="" width="50" height="50" />
     </div>
     <div class="col-md-11">
-        <p>Experimento: {{ selectedExperiment }}</p>
-        <p>Paciente: {{ selectedPatient }}</p>
+        
+        <p>Experimento: <button id="nomeExperimento" type="button" class="btn btn-link" data-toggle="popover" data-placement="bottom" title="Pacientes">Experimento </button></p>
+        <p>Paciente: <button id="nomePaciente" type="button" class="btn btn-link" data-toggle="popover" data-placement="bottom" title="Pacientes">Paciente </button></p>
     </div>
 </div>
 
 <div class="jumbotron">
-    <div class="chart" id="bargraph">
+    <div class="chart" id="bargraph" onload="generateGraph()">
         <script>
             var graphs={{ plot |safe}};
             Plotly.plot('bargraph',graphs,{});
@@ -35,10 +36,30 @@
     </div>
     <div class="col-md-4">
         <h2>Original</h2>
-        <p><a class="btn btn-default" href="http://azure.microsoft.com">Gerar Gr&aacutefico &raquo;</a></p>
+        <p><button class="btn btn-default" onclick="gerarGraficoOriginal()">Gerar Gr&aacutefico &raquo;</button></p>
     </div>
 </div>
 
-<!--<script src="../static/scripts/index-controller.js"></script>-->
+<!-- loaded popover content -->
+<div id="experimento-popover-content" style="display: none">
+    <ul class="list-group custom-popover">
+        {% for experimento in experimentos %}
+        <li class="list-group-item" id="{{experimento['_id']}}" onclick="changeExperiment(this)">
+            {{experimento['nome']}}
+        </li>
+        {% endfor %}
+    </ul>
+</div>
 
+<div id="paciente-popover-content" style="display: none">
+    <ul class="list-group custom-popover">
+        {% for paciente in pacientes %}
+        <li class="list-group-item" id="{{paciente['_id']}}" onclick="changePatient(this)">
+            {{paciente['nome']}}
+        </li>
+        {% endfor %}
+    </ul>
+</div>
+
+<!--<script src="../static/scripts/index-controller.js"></script>-->
 {% endblock %}

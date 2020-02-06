@@ -30,10 +30,10 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="runserver.py" />
-    <Compile Include="testeProjectFlask\csv_and_directory_controller.py">
+    <Compile Include="testeProjectFlask\file_controller.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="testeProjectFlask\filter.py">
+    <Compile Include="testeProjectFlask\operations_controller.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="testeProjectFlask\__init__.py" />

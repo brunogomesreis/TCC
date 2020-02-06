@@ -7,7 +7,7 @@
     <div class="row">
         <div class="col-md-12">
             <h3>
-                Tela de Cadastros
+                Adicionar Experimento
             </h3>
         </div>
     </div>
@@ -16,9 +16,15 @@
             <form role="form">
                 <div class="form-group">
                     <label for="cpfPaciente">
-                        CPF
+                        Nome do Experimento
                     </label>
-                    <input type="number" class="form-control" id="cpfPaciente" />
+                    <input type="text" list="experiments" class="form-control" id="nomeExperimento" />
+                    <datalist id="experiments">
+                        {% for experimento in experimentos %}
+                        <option id="{{experimento['_id']}}" value="{{experimento['nome']}}" SELECTED>{{experimento['nome']}}</option>"
+                        {% endfor %}
+                    </datalist>
+
                 </div>
                 <div class="form-group">
 
@@ -38,7 +44,7 @@
             </form>
         </div>
         <div class="col-md-6">
-            <form role="form">               
+            <form role="form">
                 <div class="form-group">
                     <label for="exampleInputFile">
                         Adicionar experimento

@@ -1,9 +1,24 @@
   \chapter{Conclusão}
   
-  \section{Contribuições}
-  
   \section{Limitações}
+  
+  As principais limitações deste trabalho são:
+  
+  \subsection{Hardware}
+  
+  Em relação ao hardware do projeto, a principal limitação encontrada é referente ao resfriamento do sensor na utilização de longo prazo. A última versão desenvolvida do circuito neste trabalho ainda não possui um sistema de controle eficaz o suficiente para contornar esse problema, tornando-o inviável para a utilização prática na medição respiratória de pacientes em estudos científicos.
+  
+  \subsection{Software}
+  
+  A não conclusão de um hardware funcional acarretou em uma limitação por parte do software, que foi desenvolvido a partir de um sinal simulado, sem entrada integrada com o equipamento. Muito embora neste trabalho tenha sido desenvolvido também um software capaz de ler o sinal de entrada e armazenar em um arquivo .csv, o sistema não opera de forma integrada, sendo necessário que o usuário execute um programa para gerar o arquivo .csv e, em seguida, fazer o upload desse arquivo no software responsável pela realização das operações matemáticas. 
 
   \section{Trabalhos futuros}
   
+  As próximas evoluções do trabalho consistem em desenvolver um sistema de controle capaz de manter a corrente no termistor constante, aumentando o fornecimento de tensão sempre que o sensor resfriar e aumentar sua resistência, diminuindo o fornecimento de tensão sempre que a temperatura do sensor estiver ultrapassando à necessária para a medição respiratória e obtendo, através do erro, uma medida de tensão que refletirá o comportamento respiratório. Uma vez que esse sistema funcione de forma funcional, realizar a integração entre o sistema, o leitor de entrada e o software de cálculos.
+  
   \section{Considerações finais}
+  
+  O desenvolvimento de um equipamento de baixo custo, capaz de monitorar o comportamento respiratório de pacientes para estudos científicos resulta em uma contribuição significativa para o desenvolvimento da sociedade, uma vez que, diversos estudos científicos poderiam se beneficiar de tal artefato. Em especial, o laboratório de neuroimagem e psicofisiologia, que realiza diversos estudos sobre o comportamento humano, incluindo estudos com análise e medições de dados respiratórios, beneficiaria-se com o desenvolvimento de um equipamento capaz de realizar tais medições por um baixo custo.  
+  Muito embora a última versão do hardware desenvolvida não tenha sido satisfatória para o uso prático, este trabalho contribui para o desenvolvimento futuro indicando diversos problemas encontrados, bem como as soluções utilizadas para contorná-los, além de traçar um caminho bem definido para a continuação de seu desenvolvimento.
+  Como entrega concreta e funcional, o trabalho culminou em um software capaz de realizar operações matemáticas de forma fácil e gerar gráficos que poderão ser utilizados pelos pesquisadores em suas análises.
+  A resposta à pergunta fundamental deste trabalho, referente à viabilidade do desenvolvimento de um equipamento de baixo custo capaz de realizar uma medição respiratória confiável, apesar de por hora ainda inconclusiva uma vez que o equipamento não foi, de fato, construído de maneira funcional, tende a ser positiva, avaliando os problemas e análises encontrados neste trabalho, bem como a sua projeção para trabalhos futuros.
