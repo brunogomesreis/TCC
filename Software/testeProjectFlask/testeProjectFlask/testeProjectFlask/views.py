@@ -10,23 +10,24 @@ from flask import request
 from  testeProjectFlask.file_controller import file_controller
 from  testeProjectFlask.operations_controller import operations_controller
 
-#mongo = PyMongo(app)
-#mongo.init_app(app)
-
-
-
-
 @app.route('/')
 @app.route('/home', methods=["GET","POST"] )
 def home():
+    opc = operations_controller()
     if request.method == "POST":
         patientName = request.args.get('paciente')
         experimentName = request.args.get('experimento')
+        operation = request.args.get('operacao')
         measure = file_controller.getMeasure(experimentName,patientName)
-        bar = operations_controller.create_plot(measure)
+        if (operation == 'derivada'):
+            bar = opc.create_derivate_plot(measure)
+        elif (operation == 'fft'):
+             bar = opc.create_fft_plot(measure)
+        else:
+            bar = opc.create_plot(measure)
         return bar
     else:
-        bar = operations_controller.create_random_plot()
+        bar = opc.create_random_plot()
         return render_template('index.html',
             pacientes = file_controller.getPatientsList(),
             experimentos = file_controller.getExperimentsList(), 

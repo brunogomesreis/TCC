@@ -22,12 +22,12 @@ function changeExperiment(e) {
     document.getElementById('nomeExperimento').innerText=e.innerText
 }
 
-function gerarGraficoOriginal() {
+function gerarGraficoOriginal(operation) {
     nomeExperimento=document.getElementById('nomeExperimento').innerText
     nomePaciente=document.getElementById('nomePaciente').innerText
-    $.post("/home?paciente="+nomePaciente+"&experimento="+nomeExperimento,function(data) {
+    $.post("/home?paciente="+nomePaciente+"&experimento="+nomeExperimento+"&operacao="+operation,function(data) {
         console.log(data);
         var data2=JSON.parse(data)
-        Plotly.newPlot('bargraph',data2,{});
+        Plotly.newPlot('bargraph',data2['data'],data2['layout']);
     });
 }
