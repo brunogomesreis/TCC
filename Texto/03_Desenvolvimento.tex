@@ -79,10 +79,10 @@
 \section{A evolução do circuito}
 
 \subsection{O divisor resistivo}
+
+A priori, a medição da frequência respiratória seria obtida indiretamente pela variação da temperatura do ar próximo à narina do paciente, uma vez que, em um ambiente controlado, o ar inalado possui uma temperatura inferior à do ar exalado. Valendo-se da propriedade logarítmica do termistor, uma pequena variação de temperatura ambiente ocasionada pelo processo de expiração ocasionaria uma mudança exponencial no valor da resistência. Por esse motivo, na origem do projeto, era esperada uma medição simples, obtida através da variação de tensão em um divisor resistivo composto por um termistor e uma resistência padrão(Figura: \ref{fig:divisorResistivo}).
  
-Valendo-se da propriedade logarítmica do termistor, uma pequena variação de temperatura ambiente ocasionada pelo processo de expiração ocasionaria uma mudança exponencial no valor da resistência. Por esse motivo, na origem do projeto, era esperada uma medição simples, obtida através da variação de tensão em um divisor resistivo composto por um termistor e uma resistência padrão(Figura: \ref{fig:divisorResistivo}). Contudo, devido alguns contratempos práticos, diversas mudanças fizeram-se necessárias. 
- 
-Uma das principais limitações para o desenvolvimento do projeto deve-se à dificuldade na aquisição dos componentes eletrônicos que, quando comprados via internet, necessitavam de um tempo para entrega relativamente alto e, para a compra realizada diretamente na loja física, existe uma limitação na variedade de lojas especializadas na cidade do Rio de Janeiro. Outra complicação relevante é referente à ausência de datasheet, que não é informado no momento da compra e torna-se impossível inferir qual é o datasheet correto apenas observando o componente, que é muito pequeno, sem qualquer informação sobre o fabricante ou o modelo. Dadas essas condições iniciais, foi construído o primeiro divisor resistivo apenas com base na informação de que o sensor adquirido tratava-se de um termistor NTC (do inglês Negative Temperature Coefficient) com resistência em temperatura ambiente de $10K\Omega$. Foi utilizada uma fonte de alimentação comercial de $12V$ e utilizado diversos valores entre $10K\Omega$ e $330\Omega$ para a resistência $R2$, contudo para nenhum valor de $R2$ era observada qualquer alteração de tensão na medida em que o ar era exalado próximo ao sensor, contrariando ao que era esperado, dado que a queda de tensão em cima do termistor deve ser variável junto à alteração na resistência.
+Foi construído o primeiro divisor resistivo apenas com base na informação de que o sensor adquirido tratava-se de um termistor NTC (do inglês Negative Temperature Coefficient) com resistência em temperatura ambiente de $10K\Omega$, sem acesso ao datasheet do componente. Foi utilizada uma fonte de alimentação comercial de $12V$ e utilizado diversos valores entre $10K\Omega$ e $330\Omega$ para a resistência $R2$, contudo para nenhum valor de $R2$ era observada qualquer alteração de tensão na medida em que o ar era exalado próximo ao sensor, contrariando ao que era esperado, dado que a queda de tensão em cima do termistor deve ser variável junto à alteração na resistência.
  
 \begin{figure}[h!]
 	\begin{center}
@@ -92,7 +92,7 @@ Uma das principais limitações para o desenvolvimento do projeto deve-se à dif
  	\end{center}
 \end{figure}
  
-\subsection{Lei de resfriamento de Newton} 
+\subsection{Lei de resfriamento de Newton} \label{sec:lei_de_resfriamento}
  
 A lei de resfriamento de Newton (\ref{eq:resfriamento}) indica que a taxa com que um corpo perde calor é proporcional à diferença de temperatura entre o corpo e o meio  no qual ele se encontra. Valendo-se desse princípio, nota-se que uma baixa diferença de temperatura resultaria em um maior tempo de resposta do sensor. 
  
@@ -122,43 +122,36 @@ Onde:
  	\item $R$: Resistência
 \end{itemize}
  
-\subsection{Medição da variação do Termistor}
 
-Para entender melhor o comportamento do termistor e a forma com que ele variava sua resistência devido o efeito do autoaquecimento, sem acesso ao datasheet do mesmo, foram realizadas medições utilizando o divisor resistivo, colocando o termistor em série com um resistor fixo de $330\Omega$ e uma fonte de bancada com fornecimento de tensão variável entre $0V$ e $30V$. A curva de variação pode ser observada no gráfico da figura \ref{fig:variacao_termistor}.
+\subsection{Circuito utilizando o efeito do autoaquecimento}
 
-\begin{figure}[h!]
-	\begin{center}
-		\includegraphics[width=1\linewidth]{images/variacao_resistencia_termistor.png}
-		\caption{Variação do termistor em função da tensão}
-		\label{fig:variacao_termistor}
-	\end{center}
-\end{figure}
+Em decorrência da lei de resfriamento de Newton \ref{sec:lei_de_resfriamento} e considerando a baixa variação de temperatura para esse tipo de medição, seria inviável a realização da medida diretamente pela diferença de temperatura entre inspiração e expiração, dada a velocidade de resposta necessária para a obtenção dos dados de forma confiável e a utilização de equipamentos de baixo custo como requisito. Para contornar esse problema, foi utilizada a propriedade de autoaquecimento do termistor (\ref{eq:autoAquecimento}), que passou a ser utilizado como um sensor de fluxo. Ou seja, o sistema não mais tenta inferir a frequência respiratória com base no aumento da temperatura ambiente ocasionada pela saída de ar quente do corpo humano, ao contrário, ele aplica uma corrente muito alta no sensor forçando-o a atingir por conta própria uma temperatura ainda maior em seu estado permanente e, no momento de seu encontro com qualquer fluxo de ar resultante da respiração humana, o sensor registra uma alta queda de temperatura, registrando, de forma mais nítida o momento da ação respiratória.
 
-
-\subsection{Circuito utilizando o efeito do autoaquecimetno}
-
-Portanto, para contornar o problema obtido devida a lei de resfriamento de Newton, o circuito foi ajustado para utilizar a propriedade de autoaquecimento do termistor (\ref{eq:autoAquecimento}).  
- 
 Ao aplicar uma alta corrente no sensor, é induzido então um aumento na temperatura deste. Em decorrência desse aumento, é possível observar uma maior diferença de temperatura entre o sensor e o fluxo de ar e, por conseguinte, uma maior taxa para transferência de calor e um menor tempo de resposta por parte do termistor. Contudo, para atingir uma faixa de temperatura sensível, capaz de gerar uma resposta visível ao expor o sensor à respiração, o circuito necessita de uma tensão elevada, acima das entregues por fontes comerciais padrão, que costumam variar entre $5V$ e $12V$, gerando a necessidade de projetar um retificador de tensão capaz de converter a tensão de corrente alternada entregue pela rede elétrica residencial em uma tensão contínua alta o suficiente para fornecer ao termistor a corrente demandada.
  
 Realizando testes de bancada, com um gerador de tensão variando de $0V$ à $30V$ e uma resistência de $330\Omega$ em série com o termistor, foi possível atingir uma temperatura sensível ao sopro, entretanto, ao aplicar uma tensão em torno de $22V$, o sensor demorava um tempo considerável para aquecer novamente, tornando-o inviável para medir o comportamento respiratório dada a frequência do sopro em uma respiração normal. Aumentando a tensão para $28V$, já era possível observar uma atenuação considerável na queda constante da temperatura dado que o termistor era capaz de se aquecer mais rápido. O problema gerado por esse aumento de tensão deve-se ao fato de que, quanto maior é a corrente, maior é o autoaquecimento e, quanto maior a temperatura, menor é a resistência, gerando um aumento ainda maior na corrente passante que, por sua vez, aumenta ainda mais a temperatura até que o sensor atingia um patamar no qual queimava, caso não houvesse nenhum sopro forçando a temperatura a diminuir. 
  
-Para suprir o fornecimento de tensão em corrente contínua em torno dos $28V$ foi necessário construir um retificador de tensão, uma vez que as fontes padrão, encontradas no mercado, costumam fornecer tensão menor que a desejada.
+Para suprir o fornecimento de tensão em corrente contínua em torno dos $28V$ foi necessário construir um retificador de tensão, uma vez que as fontes padrão, encontradas no mercado, costumam fornecer tensão menor que a desejada. O circuito projetado para a fonte de corrente encontra-se na figura \ref{fig:circuito_retificador}.
 
--- Colocar foto do circuito e do projeto da fonte 
+\begin{figure}[h!]
+	\begin{center}
+		\includegraphics[width=1\linewidth]{images/circuito_retificador.png}
+		\caption{Retificador de Tensão}
+		\label{fig:circuito_retificador}
+	\end{center}
+\end{figure} 
+ 
  
 \subsection{Circuito com controle realimentado} 
  
-Se por um lado, o aumento da tensão era importante para que a temperatura não decaísse constantemente ao iniciar a medição respiratória, por outro, o sistema precisava ser protegido para que a corrente não atingisse um determinado patamar que danificasse o componente. O ajuste mais simples para regular a corrente em um componente costuma ser adicionar uma resistência em série, diminuindo a corrente por uma mera consequência da lei de ohm (\ref{eq:leideohm}). Contudo, por se tratar de uma resistência variável, a tensão necessária para o aquecimento do termistor em seu estado inicial era maior que a tensão necessária para mantê-lo abaixo de um patamar seguro após a diminuição de sua resistência pelo efeito do autoaquecimento. Foi pensado então em um circuito de controle não linear (Figura: \ref{fig:circuitoRealimentado}), que, em teoria, forneceria uma alta tensão para o termistor até que sua resistência variasse e a corrente passante atingisse um patamar determinado. 
-  
-\begin{equation} \label{eq:leideohm}
-	V = R.I
-\end{equation}
-Onde:
-\begin{itemize}[label=]
-  	\item $V$: Tensão
-  	\item $R$: Resistência
-  	\item $I$: Corrente
+Se por um lado, o aumento da tensão era importante para que a temperatura não decaísse constantemente ao iniciar a medição respiratória, por outro, o sistema precisava ser protegido para que a corrente não atingisse um determinado patamar que danificasse o componente. O ajuste mais simples para regular a corrente em um componente costuma ser adicionar uma resistência em série, diminuindo a corrente por uma mera consequência da lei de ohm (\ref{eq:leideohm}). Contudo, por se tratar de uma resistência variável, a tensão necessária para o aquecimento do termistor em seu estado inicial era maior que a tensão necessária para mantê-lo abaixo de um patamar seguro após a diminuição de sua resistência pelo efeito do autoaquecimento. Foi desenvolvido então em um circuito de controle não linear (Figura: \ref{fig:circuitoRealimentado}), que, em teoria, forneceria uma alta tensão para o termistor até que sua resistência variasse e a corrente passante atingisse um patamar determinado. O comportamento esperado para o circuito de controle seria o seguinte: 
+
+\begin{itemize}
+	\item [1-] O amplificador operacional iria ajustar a tensão de saída na tentativa de igualar as tensões nos dois terminais de entrada.
+	\item [2-] Quando a tensão no terminal de entrada negativo é igual a zero e a do terminal positivo é igual a $5V$, o amplificador aumenta sua saída fazendo com que o transistor entre em saturação e conduza uma corrente no emissor praticamente igual à de referência no coletor.
+	\item [3-] Na medida em que a resistência do termistor diminui pelo efeito de autoaquecimento, a tensão de saída aumenta até que esta se iguale à do terminal positivo.
+	\item [4-] Após igualar a tensão nos terminais do amplificador, o transistor sai da zona de saturação e o sistema trabalha pra manter a tensão de saída constante.
+	\item [5-] No momento em que o sensor entra em contato com o fluxo de ar, a resistência do termistor aumenta, diminuindo a tensão na saída e estimulando o sistema de controle a saturar o transistor e induzir o efeito do autoaquecimento no sensor. 
 \end{itemize}
 
 \begin{figure}[h!]
@@ -168,8 +161,86 @@ Onde:
 		\label{fig:circuitoRealimentado}
 	\end{center}
 \end{figure}
+\FloatBarrier
 
-O comportamento esperado para o circuito de controle seria o seguinte: O amplificador operacional iria ajustar a tensão de saída na tentativa de igualar as tensões nos dois terminais de entrada, sendo assim, no momento inicial, quando a tensão no terminal de entrada negativo é igual a zero e a do terminal positivo é igual a $5V$, o amplificador aumenta sua saída fazendo com que o transistor entre em saturação e conduza uma corrente no emissor praticamente igual à de referência no coletor, na medida em que a resistência do termistor diminui pelo efeito de autoaquecimento, a tensão de saída aumenta até que esta se iguale à do terminal positivo, ao atingir esse patamar, o transistor sai da zona de saturação e o sistema trabalha pra manter a tensão de saída constante. No momento em que o sensor entra em contato com o fluxo de ar, a resistência do termistor aumenta, diminuindo a tensão na saída e estimulando o sistema de controle a saturar o transistor e induzir o efeito do autoaquecimento no sensor. Após quantizar a tensão da saída através de um microcontrolador, foi possível traçar o gráfico da figura \ref{fig:RespostaCircuitoRealimentado}, no qual aparece nítida a resposta do sistema ao submeter o sensor a um fluxo de ar. Entretanto, ao expor o sensor a um período prolongado de exposição à respiração humana, foi possível observar que o efeito do resfriamento contínuo continuava a ser reproduzido (gráfico da figura \ref{fig:RespostaCircuitoRealimentadoLongoPrazo}).
+\begin{equation} \label{eq:leideohm}
+V = R.I
+\end{equation}
+Onde:
+\begin{itemize}[label=]
+	\item $V$: Tensão
+	\item $R$: Resistência
+	\item $I$: Corrente
+\end{itemize}
+
+\section{Resultados e medições do hardware}
+
+\subsection{Medição da variação do Termistor}
+
+Para entender melhor o comportamento do termistor e a forma com que ele variava sua resistência devido o efeito do autoaquecimento, sem acesso ao datasheet do mesmo, foram realizadas medições utilizando o divisor resistivo, colocando o termistor em série com um resistor fixo de $330\Omega$ e uma fonte de bancada com fornecimento de tensão variável entre $0V$ e $30V$. A curva de variação pode ser observada no gráfico da figura \ref{fig:variacao_termistor}.
+
+\begin{figure}[h!]
+	\begin{center}
+		\includegraphics[width=0.9\linewidth]{images/variacao_resistencia_termistor.png}
+		\caption{Variação do termistor em função da tensão}
+		\label{fig:variacao_termistor}
+	\end{center}
+\end{figure}
+\FloatBarrier
+
+\subsection{Fonte de tensão}
+
+Para entregar a tensão necessária ao circuito foi construído o retificador da foto \ref{fig:fonte_circuito}, capaz de entregar uma tensão de saída na ordem de $34V$ conforme a medida \ref{fig:fonte_medicao}
+
+\begin{figure}[h!]
+	\begin{center}
+		\includegraphics[width=0.5\linewidth]{images/fonte_circuito.jpg}
+		\caption{Retificador de tensão}
+		\label{fig:fonte_circuito}
+	\end{center}
+\end{figure}
+
+\begin{figure}[h!]
+	\begin{center}
+		\includegraphics[width=0.5\linewidth]{images/fonte_medicao.jpg}
+		\caption{Medição da tensão de saída do retificador}
+		\label{fig:fonte_medicao}
+	\end{center}
+\end{figure}
+\FloatBarrier
+
+\subsection{Máscara respiratória}
+
+Para acomodar o sensor e forçar o contato do fluxo de ar, tanto da expiração quanto da inspiração, em sua superfície, foi adaptada uma máscara de nebulização. A saída de ar foi vedada com fita isolante, o sensor alocado em sua parte inferior e pequenos furos foram realizados por onde ocorrerá a troca de ar com o meio externo. O protótipo pode ser observado nas figuras \ref{fig:mascara1}, \ref{fig:mascara2} e \ref{fig:mascara3}.
+
+\begin{figure}[h!]
+	\begin{center}
+		\includegraphics[width=0.5\linewidth]{images/mascara1.jpeg}
+		\caption{Máscara respiratória}
+		\label{fig:mascara1}
+	\end{center}
+\end{figure}
+
+\begin{figure}[h!]
+	\begin{center}
+		\includegraphics[width=0.8\linewidth]{images/mascara2.jpeg}
+		\caption{Máscara respiratória}
+		\label{fig:mascara2}
+	\end{center}
+\end{figure}
+
+\begin{figure}[h!]
+	\begin{center}
+		\includegraphics[width=0.8\linewidth]{images/mascara3.jpeg}
+		\caption{Máscara respiratória}
+		\label{fig:mascara3}
+	\end{center}
+\end{figure}
+\FloatBarrier
+
+\subsection{Teste do circuito realimentado}
+
+Após realizar uma medição respiratória de teste e quantizar a tensão da saída através de um microcontrolador, foi possível traçar o gráfico da figura \ref{fig:RespostaCircuitoRealimentado}, no qual aparece nítida a resposta do sistema ao submeter o sensor a um fluxo de ar. Entretanto, ao expor o sensor a um período prolongado de exposição à respiração humana, foi possível observar que o efeito do resfriamento contínuo continuava a ser reproduzido (gráfico da figura \ref{fig:RespostaCircuitoRealimentadoLongoPrazo}). Ao analisar o sinal em um osciloscópio com filtro AC, conseguimos ter o sinal em sua melhor forma, conforme a figura \ref{sinal_osciloscopio}.
 
 
 \begin{figure}[h!]
@@ -187,11 +258,17 @@ O comportamento esperado para o circuito de controle seria o seguinte: O amplifi
 		\label{fig:RespostaCircuitoRealimentadoLongoPrazo}
 	\end{center}
 \end{figure}
+
+\begin{figure}[h!]
+	\begin{center}
+		\includegraphics[width=1\linewidth]{images/sinal_osciloscopio.png}
+		\caption{Sinal de saída do circuito realimentado no osciloscópio}
+		\label{fig:sinal_osciloscopio}
+	\end{center}
+\end{figure}
 \FloatBarrier
 
 
-
- 
  
 \section{O Software}
 
@@ -228,16 +305,8 @@ Antes de gerar um sinal simulado para iniciar o efetivamente o desenvolvimento d
 
 \subsubsection{Simulação do sinal de entrada}
 
-Durante os experimentos com o hardware, foi possível observar um padrão na resposta do sinal analógico quando medido pelo osciloscópio que, em todas as versões do circuito, possuía um comportamento muito similar (imagem \ref{fig:ComportamentoSinalAnalogico}). A forma desse sinal pode ser explicada observando o princípio de funcionamento escolhido para que o sensor de temperatura seja capaz de medir a respiração. Em um cenário ideal, espera-se que o sensor esteja aquecido até que encontre uma temperatura de equilíbrio de operação e, quando em contato com um fluxo de ar da inspiração ou expiração, essa temperatura irá diminuir, aumentando a resistência do sensor e, em consequência, exibindo, no osciloscópio, uma diminuição da tensão. Quando acaba o fluxo de ar (tempo entre a expiração e inspiração), o circuito tentará esquentar novamente o sensor até que ele retorne à temperatura de equilíbrio. É possível também, observar que possuímos duas faixas distintas de amplitude na queda de tensão, o que nos faz concluir que o sensor tenderá a não obter uma resposta indiferente ao tipo de fluxo de ar (inspiração ou expiração) seja pelo fato de que a temperatura do ar na expiração é levemente maior, ou seja devido à construção que pode privilegiar o contato do fluxo do ar com o sensor em um sentido mais que no outro. Nos casos experimentados até então, por exemplo, a queda de tensão decorrente da inspiração era consideravelmente maior que a da expiração.
+Durante os experimentos com o hardware, foi possível observar um padrão na resposta do sinal analógico quando medido pelo osciloscópio que, em todas as versões do circuito, possuía um comportamento muito similar (imagem \ref{fig:sinal_osciloscopio}). A forma desse sinal pode ser explicada observando o princípio de funcionamento escolhido para que o sensor de temperatura seja capaz de medir a respiração. Em um cenário ideal, espera-se que o sensor esteja aquecido até que encontre uma temperatura de equilíbrio de operação e, quando em contato com um fluxo de ar da inspiração ou expiração, essa temperatura irá diminuir, aumentando a resistência do sensor e, em consequência, exibindo, no osciloscópio, uma diminuição da tensão. Quando acaba o fluxo de ar (tempo entre a expiração e inspiração), o circuito tentará esquentar novamente o sensor até que ele retorne à temperatura de equilíbrio. É possível também, observar que possuímos duas faixas distintas de amplitude na queda de tensão, o que nos faz concluir que o sensor tenderá a não obter uma resposta indiferente ao tipo de fluxo de ar (inspiração ou expiração) seja pelo fato de que a temperatura do ar na expiração é levemente maior, ou seja devido à construção que pode privilegiar o contato do fluxo do ar com o sensor em um sentido mais que no outro. Nos casos experimentados até então, por exemplo, a queda de tensão decorrente da inspiração era consideravelmente maior que a da expiração.
 
-
-\begin{figure}[h!]
-	\begin{center}
-		\includegraphics[width=0.5\linewidth]{images/ComportamentoSinalAnalogico.jpeg}
-		\caption{Leitura do sinal analógico no osciloscópio}
-		\label{fig:ComportamentoSinalAnalogico}
-	\end{center}
-\end{figure}
 
 Considerando o comportamento dos sinais analógicos obtidos nas versões de circuito anteriores e o caráter cíclico natural do comportamento respiratório, o sinal de entrada foi simulado como um somatório de senoides com diferentes amplitudes e frequências. A frequência escolhida para o sinal principal foi a de 18 ciclos por minuto, que é a faixa superior da frequência considerada confortável para um adulto normal em repouso. Uma nova senoide com a metade da frequência foi gerada e posta defasada de modo a atenuar os picos referentes à expiração e agravar os relacionados à inspiração e, para a simulação do ruído, foi adicionada mais uma senoide com frequência mais elevada. O sinal simulado pode ser descrita conforme a equação \ref{eq:sinalSimulado} e produz o resultado apresentado no gráfico da figura \ref{fig:Funcao_simulada_interpolada}.
 
@@ -299,7 +368,7 @@ Onde:
 
 \subsubsection{Fast Fourier Transform (FFT)}
 
-Para obter informações referentes à frequência do sinal respiratório, o sistema calcula e plota um gráfico realizando uma análise de Fourier, convertendo o sinal original, no domínio do tempo, em uma representação no domínio da frequência. Contudo,  realizar o cálculo da transformada de Fourier diretamente de sua definição \ref{eq:DTFT} implica em operações aritméticas de complexidade  \boldmath $O(n^2)$, entretanto é possível atingir o mesmo resultado utilizando a FFT com uma complexidade de apenas $O(n \log (n)) $.   \unboldmath Aumentando a performance do software.
+Para obter informações referentes à frequência do sinal respiratório, o sistema calcula e plota um gráfico realizando uma análise de Fourier, convertendo o sinal original, no domínio do tempo, em uma representação no domínio da frequência. Contudo,  realizar o cálculo da transformada de Fourier diretamente de sua definição \ref{eq:DTFT} implica em operações aritméticas de complexidade  \boldmath $O(n^2)$, entretanto, em meados da década de 1960, foi apresentado o algorítimo conhecido como transformada rápida de Fourier, ou FFT (Fast Fourier Transform),que pode ser encontrado nas anotações de Gauss \cite{heideman1985gauss}. Esse algorítimo mostrou-se perfeitamente adequado para uma eficiente implementação digital reduzindo em algumas ordens de grandeza o tempo necessário para calcular as transformadas \cite{oppenheim2010}. Em outras palavras, é possível obter o mesmo resultado da DTFT utilizando a FFT com uma complexidade de apenas $O(n \log (n)) $.   \unboldmath Aumentando assim a performance do software.
 
 
 
@@ -309,7 +378,9 @@ Para obter informações referentes à frequência do sinal respiratório, o sis
 
 \subsubsection{Complexidade de algorítimo}
 
-A complexidade de um algorítimo é determinada através da relação entre o tempo e memória gastos para realizar a operação de acordo com o tamanho da entrada. Ou seja, em termos práticos, é a complexidade do algorítimo, aliada à capacidade de processamento do computador, quem determinará a velocidade de funcionamento do sistema na medida em que se aumenta a quantidade de dados na entrada. A forma mais popular de representar a complexidade de tempo na análise de algorítimos é a \textbf{\textit{complexidade assintótica}}, que ignora fatores constantes e os termos que crescem mais lentamente. Por exemplo, em uma relação onde o tempo de execução $T(N)$ em função da entrada de dados $N$ é de $T(N) = 27N^2 + 45N + 12$, na medida em que $N$ aumenta, a função pode ser simplificada por $T(N) = 24N^2$. Simplificando ainda mais a análise, para prever o quão rápido será o crescimento do tempo de execução em relação ao aumento da entrada, podemos desconsiderar a constante que multiplica o termo de maior grau, uma vez que, tanto para $T(N) = 100000N^2$ quanto para $T(N) = 10N^2$, dobrar a entrada $N$ implicará em quadruplicar o tempo $T(N)$. Representamos $O(g)$ como sendo o limite superior para o tempo gasto por um algorítimo, em outras palavras, $O(g)$ representa a classe de funções que crescem, no máximo, tão rápidas quanto a função $g$. Ou seja, reduzir o cálculo da FFT de complexidade \boldmath $O(n^2)$ para $O(n \log (n)) $.   \unboldmath representa diminuir o tempo de execução, antes limitado pela função em vermelho, para a função em azul no gráfico da figura \ref{fig:grafico_complexidade}.
+A complexidade de um algorítimo é determinada através da relação entre o tempo e memória gastos para realizar a operação de acordo com o tamanho da entrada. Ou seja, em termos práticos, é a complexidade do algorítimo, aliada à capacidade de processamento do computador, quem determinará a velocidade de funcionamento do sistema na medida em que se aumenta a quantidade de dados na entrada. Reduzir a complexidade de um algorítimo significa diminuir o tempo de execução do sistema.
+
+A forma mais popular de representar a complexidade de tempo na análise de algorítimos é a \textbf{\textit{complexidade assintótica}}, que ignora fatores constantes e os termos que crescem mais lentamente. Por exemplo, em uma relação onde o tempo de execução $T(N)$ em função da entrada de dados $N$ é de $T(N) = 27N^2 + 45N + 12$, na medida em que $N$ aumenta, a função pode ser simplificada por $T(N) = 24N^2$. Simplificando ainda mais a análise, para prever o quão rápido será o crescimento do tempo de execução em relação ao aumento da entrada, podemos desconsiderar a constante que multiplica o termo de maior grau, uma vez que, tanto para $T(N) = 100000N^2$ quanto para $T(N) = 10N^2$, dobrar a entrada $N$ implicará em quadruplicar o tempo $T(N)$. Representamos $O(g)$ como sendo o limite superior para o tempo gasto por um algorítimo, em outras palavras, $O(g)$ representa a classe de funções que crescem, no máximo, tão rápidas quanto a função $g$. Ou seja, reduzir o cálculo da FFT de complexidade \boldmath $O(n^2)$ para $O(n \log (n)) $.   \unboldmath representa diminuir o tempo de execução, antes limitado pela função em vermelho, para a função em azul no gráfico da figura \ref{fig:grafico_complexidade}.
 
 \begin{figure}[h!]
 	\begin{center}
@@ -321,7 +392,7 @@ A complexidade de um algorítimo é determinada através da relação entre o te
 
 \subsubsection{Filtro passa-baixas}
 
-Com a finalidade de eliminar eventuais ruídos, o sistema é capaz de aplicar filtros passa-baixas, eliminando altas frequências ruidosas e preservando as variações que ocorrem em uma faixa de frequência compatível com a respiração humana (abaixo de 70 ciclos por minuto em atletas). Os filtros digitais são divididos em duas classes FIR e IIR e, para maior liberdade do pesquisador, o sistema oferece as duas opções de filtragem.
+Com a finalidade de eliminar eventuais ruídos, o sistema é capaz de aplicar filtros passa-baixas digitais, eliminando altas frequências ruidosas e preservando as variações que ocorrem em uma faixa de frequência compatível com a respiração humana (abaixo de 70 ciclos por minuto em atletas). Os filtros digitais usam computação para implementar a ação de filtragem. Em comparação, existem duas classes de filtro digital \cite{haykin2001}, dependendo da sua resposta ao impulso (FIR e IIR) e, para maior liberdade do pesquisador, o sistema oferece as duas opções de filtragem.
 
 \subsubsection{IIR (Infinite Impulse Response)}
 
@@ -362,7 +433,7 @@ w(n) = 0,54 - 0,46\cos \left(\dfrac{2\pi n}{M - 1}\right) \qquad 0 \le n \le M-1
 
 \subsection{Evolução do software para um sistema web}
 
-Após validado o teste de conceitos, ou seja, após a certeza de que seria factível o desenvolvimento de uma aplicação capaz de ler os dados enviados pelo hardware através de uma porta usb, salvar em um arquivo .csv e realizar as operações matemáticas desejadas para a análise do sinal, foi desenvolvida uma aplicação web, gerando uma interface mais intuitiva e completa, que é capaz de armazenar dados referentes aos experimentos realizados, ao cadastro dos paciente, bem como as medições em um sistema de banco de dados, além de exibir os resultados em um gráfico interativo, com diversas funcionalidades, como aproximar, exportar, deslocar e etc.
+Após validado o teste de conceitos, ou seja, após a certeza de que seria factível o desenvolvimento de uma aplicação capaz de ler os dados enviados pelo hardware através de uma porta usb, salvar em um arquivo .csv e realizar as operações matemáticas desejadas para a análise do sinal, foi desenvolvida uma aplicação web, gerando uma interface mais intuitiva e completa, que é capaz de armazenar dados referentes aos experimentos realizados, ao cadastro dos paciente, bem como as medições em um sistema de banco de dados, além de exibir os resultados em um gráfico interativo, com diversas funcionalidades, como aproximar, exportar, deslocar e etc. Com a finalidade de simplificar o uso da ferramenta, armazenar os dados de forma mais confiável e dar ao pesquisador uma melhor visualização dos dados e a possibilidade de exportar gráficos com melhor representação para ser usado em artigos científicos.O sistema é dividido em três telas, são elas: Tela principal (\ref{sec:tela_principal}), Tela de cadastro de pacientes (\ref{sec:tela_pacientes}) e Tela de cadastro de experimentos (\ref{sec:tela_experimentos}).
 
 \subsubsection{Flask}
 
@@ -454,7 +525,7 @@ Após a escolha do Flask como framework e do MongoDb (Banco de dados não relaci
 	\item - Experimento
 \end{itemize}
 
-\subsubsection{Tela de cadastro de Pacientes}
+\subsubsection{Tela de cadastro de Pacientes} \label{sec:tela_pacientes}
 
 Ao selecionar a opção "Cadastro" no menu superior, o usuário é capaz de registrar um paciente, inserindo as informações "nome", "CPF", "E-mail" e "Data de Nascimento" (Figura \ref{fig:tela_cadastros}). Após preenchidas, se CPF inserido for um CPF válido, as informações são armazenadas no banco de dados (Figuras \ref{fig:paciente_salvo_tela} e \ref{fig:paciente_salvo_banco}). Caso contrário, o sistema exibe uma mensagem informando que trata-se de um CPF inválido (Figura \ref{fig:cpf_invalido_msg}). Para facilitar que o usuário observe a invalidade do CPF, o campo altera de cor dinamicamente, ficando verde caso o CPF seja válido e vermelho caso não seja (Figuras \ref{fig:cpf_invalido} e \ref{fig:cpf_valido}).
 
@@ -524,7 +595,7 @@ Além das operações de validação dos primeiro e segundo dígito, o algoríti
 	\end{center}
 \end{figure}
 
-\subsubsection{Tela de Experimentos}
+\subsubsection{Tela de Experimentos} \label{sec:tela_experimentos}
 
 Ao acionar a opção "Experimento" no menu superior, o usuário é capaz é direcionado para uma tela (Figura \ref{fig:experimento}) em que pode escolher um experimento já cadastrado (Figura \ref{fig:experimento_lista}) ou cadastrar um novo experimento, além de associar pacientes já cadastrados e fazer o upload de arquivos .csv, que podem conter os dados obtidos pelo hardware \ref{sub:LeituraSinalEntrada} ou dados de qualquer outra origem, desde que estejam divididos com o eixo x na primeira coluna e o eixo y na segunda coluna, ambas com cabeçalho e começando a inserção dos dados na linha 2. Ao acionar o botão de upload, o sistema abre uma janela para que o usuário procure e adicione o arquivo .csv armazenado em seu computador local (Figura \ref{fig:experimento_csv}).
 
@@ -554,7 +625,7 @@ Ao acionar a opção "Experimento" no menu superior, o usuário é capaz é dire
 \end{figure}
 
 
-\subsubsection{Tela Principal}
+\subsubsection{Tela Principal} \label{sec:tela_principal}
 
 Ao acessar a página principal, ou ao selecionar a opção "Home" no menu principal, o sistema irá exibir a tela da figura \ref{fig:home}. Nessa tela, será exibido um gráfico aleatório e os campos "Experimento" e "Paciente" não estarão preenchidos. Ao apertar em algum desses campos, será exibido um modal \ref{fig:home_lista} com a lista de experimentos ou pacientes cadastrados para que o usuário possa selecionar qual medição ele deseja analisar. Ao escolher o experimento e o paciente desejado, o usuário pode utilizar qualquer um dos 4 botões localizados na parte inferior da tela para escolher qual análise quer exibir. As opções são:
 
